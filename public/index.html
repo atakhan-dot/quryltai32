@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Школьный Курултай | Школа-гимназия №32</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- НАВБАР -->
+  <!-- НАВБАР -->
+  <nav class="glass-nav text-white sticky top-0 z-40 transition-smooth">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-[68px]">
+        
+        <!-- Логотип -->
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigate('home')">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg" style="background: linear-gradient(135deg,#f59e0b,#d97706); color:#0f0d2e;">
+            <i class="fa-solid fa-landmark-dome"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold tracking-wide leading-none text-white group-hover:text-amber-300 transition-colors">
+              Школьный Құрылтай
+            </div>
+            <div class="text-[10px] text-slate-400 mt-0.5 tracking-wider">Школа-гимназия №32 • Астана</div>
+          </div>
+        </div>
+
+        <!-- Навигационные вкладки -->
+        <div class="hidden md:flex items-center gap-1">
+          <button onclick="navigate('home')" class="nav-link" data-target="home">
+            <i class="fa-solid fa-house mr-1.5 opacity-70"></i><span data-i18n="navHome">Басты бет</span>
+          </button>
+          <button onclick="navigate('factions')" class="nav-link" data-target="factions">
+            <i class="fa-solid fa-building-columns mr-1.5 opacity-70" style="color:#fbbf24"></i><span data-i18n="navMinistries">Министрліктер</span>
+          </button>
+          <button onclick="navigate('kpi')" class="nav-link" data-target="kpi">
+            <i class="fa-solid fa-chart-line mr-1.5 opacity-70" style="color:#34d399"></i><span data-i18n="navKpi">KPI жүйесі</span>
+          </button>
+          <button onclick="navigate('leaderboard')" class="nav-link" data-target="leaderboard">
+            <i class="fa-solid fa-trophy mr-1.5 opacity-70" style="color:#fbbf24"></i><span data-i18n="navLeaderboard">Рейтинг</span>
+          </button>
+          <button id="nav-member-btn" onclick="navigate('member')" class="nav-link hidden" data-target="member">
+            <i class="fa-solid fa-id-badge mr-1.5 opacity-70" style="color:#818cf8"></i><span data-i18n="navCabinet">Менің кабинетім</span>
+          </button>
+          <button id="nav-admin-btn" onclick="navigate('admin')" class="hidden ml-1 px-3 py-1.5 rounded-lg text-xs font-bold text-amber-300 border border-amber-400/25 hover:bg-amber-400/10 transition-smooth" data-target="admin">
+            <i class="fa-solid fa-shield-halved mr-1.5"></i><span data-i18n="navAdmin">Әкімшілік</span>
+          </button>
+        </div>
+
+        <!-- Тіл ауыстырғыш (KZ / RU) -->
+        <div class="flex items-center bg-white/10 p-1 rounded-xl border border-white/15 text-xs font-bold text-white shadow-inner">
+          <button id="lang-btn-kz" onclick="setLanguage('kz')" class="px-2.5 py-1 rounded-lg transition-smooth bg-amber-500 text-slate-950 font-black shadow-sm" title="Қазақ тілі">
+            ҚАЗ
+          </button>
+          <button id="lang-btn-ru" onclick="setLanguage('ru')" class="px-2.5 py-1 rounded-lg transition-smooth text-slate-300 hover:text-white" title="Русский язык">
+            РУС
+          </button>
+        </div>
+
+        <!-- Блок авторизации -->
+        <div class="flex items-center gap-2" id="auth-buttons-container">
+          <!-- Заполняется динамически через JS -->
+        </div>
+        <button id="mobile-menu-toggle" type="button" class="mobile-menu-toggle" aria-label="Мәзірді ашу" aria-expanded="false" aria-controls="mobile-navigation" onclick="toggleMobileMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+      </div>
+      <div id="mobile-navigation" class="mobile-navigation hidden">
+        <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 mb-2">
+          <span class="text-xs text-slate-400 font-bold uppercase">Тілді таңдау / Выбор языка:</span>
+          <div class="flex items-center bg-white/10 p-0.5 rounded-lg border border-white/15 text-xs font-bold">
+            <button id="mobile-lang-btn-kz" onclick="setLanguage('kz')" class="px-2 py-0.5 rounded bg-amber-500 text-slate-950 font-black">ҚАЗ</button>
+            <button id="mobile-lang-btn-ru" onclick="setLanguage('ru')" class="px-2 py-0.5 rounded text-slate-300">РУС</button>
+          </div>
+        </div>
+        <button onclick="navigate('home'); closeMobileMenu()" class="nav-link" data-target="home"><span data-i18n="navHome">Басты бет</span></button>
+        <button onclick="navigate('factions'); closeMobileMenu()" class="nav-link" data-target="factions"><span data-i18n="navMinistries">Министрліктер</span></button>
+        <button onclick="navigate('kpi'); closeMobileMenu()" class="nav-link" data-target="kpi"><span data-i18n="navKpi">KPI жүйесі</span></button>
+        <button onclick="navigate('leaderboard'); closeMobileMenu()" class="nav-link" data-target="leaderboard"><span data-i18n="navLeaderboard">Рейтинг</span></button>
+        <button id="mobile-member-btn" onclick="navigate('member'); closeMobileMenu()" class="nav-link hidden" data-target="member"><span data-i18n="navCabinet">Менің кабинетім</span></button>
+        <button id="mobile-admin-btn" onclick="navigate('admin'); closeMobileMenu()" class="nav-link hidden" data-target="admin"><span data-i18n="navAdmin">Әкімшілік</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ГЛАВНЫЙ КОНТЕНТ (VIEWS) -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. СЕКЦИЯ: ГЛАВНАЯ СТРАНИЦА -->
+    <div id="view-home" class="view-content space-y-10">
+      <!-- Баннер -->
+      <div class="hero-gradient rounded-3xl text-white p-8 md:p-14 shadow-2xl relative overflow-hidden">
+        <div class="hero-pattern pointer-events-none"></div>
+        <div class="absolute -right-20 -top-20 w-96 h-96 rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%)"></div>
+        <div class="absolute -left-10 -bottom-20 w-80 h-80 rounded-full pointer-events-none" style="background:radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%)"></div>
+        
+        <div class="relative z-10 max-w-3xl space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-amber-300 text-xs font-bold tracking-widest uppercase" style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.25)">
+            <i class="fa-solid fa-shield-halved"></i> <span data-i18n="heroBadge">Мектептік өзін-өзі басқарудың ресми порталы</span>
+          </div>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight" data-i18n="heroTitle">
+            Мектеп Құрылтайының бірыңғай мониторинг және <span style="background:linear-gradient(90deg,#fbbf24,#f59e0b,#fde68a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">KPI жүйесі</span>
+          </h1>
+          <p class="text-slate-300 text-base md:text-lg leading-relaxed font-light max-w-2xl" data-i18n="heroDesc">
+            Парламенттің әрбір мүшесінің үлесін ашық бағалау, 7 министрлікті үйлестіру, бастамаларды қорғау және мектеп басшылығы мен Оқу-ағарту министрлігі үшін жедел есеп беру жүйесі.
+          </p>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button onclick="navigate('factions')" class="px-5 py-3 rounded-xl font-bold text-sm flex items-center gap-2 shadow-lg transition-smooth hover:-translate-y-0.5" style="background:linear-gradient(135deg,#f59e0b,#d97706); color:#0f0d2e; box-shadow:0 4px 20px rgba(245,158,11,0.35)">
+              <i class="fa-solid fa-building-columns"></i> <span data-i18n="heroBtnMinistries">Барлық 7 министрлік</span>
+            </button>
+            <button onclick="navigate('kpi')" class="px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 transition-smooth hover:bg-white/15" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); backdrop-filter:blur(10px)">
+              <i class="fa-solid fa-scale-balanced"></i> <span data-i18n="heroBtnKpi">Регламент және KPI шкаласы</span>
+            </button>
+            <button onclick="openAuthModal('register')" class="px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 transition-smooth hover:-translate-y-0.5" style="background:linear-gradient(135deg,#6366f1,#4f46e5); box-shadow:0 4px 16px rgba(99,102,241,0.3)">
+              <i class="fa-solid fa-user-plus"></i> <span data-i18n="heroBtnJoin">Құрылтайға қосылу</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Распоряжения и объявления Президента Курултая -->
+      <div id="home-announcements-section" class="bg-gradient-to-r from-amber-500/10 via-yellow-500/5 to-cyan-500/10 border border-amber-500/30 rounded-3xl p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-lg shadow-sm">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-slate-900" data-i18n="annSectionTitle">Құрылтай Президентінің өкімдері мен хабарландырулары</h3>
+              <p class="text-xs text-slate-500" data-i18n="annSectionSub">№32 мектеп-гимназиясы • Ресми хабарламалар мен шешімдер</p>
+            </div>
+          </div>
+          <button id="admin-create-ann-btn" onclick="openCreateAnnouncementModal()" class="hidden px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-smooth">
+            <i class="fa-solid fa-plus mr-1"></i> <span data-i18n="annPublishBtn">Жариялау</span>
+          </button>
+        </div>
+        <div id="home-announcements-list" class="space-y-3">
+          <!-- Заполняется динамически -->
+        </div>
+      </div>
+
+      <!-- 4 Ключевых столпа системы -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-smooth">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-sitemap"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="pillar1Title">7 Министрлік</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="pillar1Desc">Атқарушылық үдерістерден медиа мен экологияға дейінгі нақты жауапкершілік бөлінісі.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-smooth">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="pillar2Title">200 баллдық шкала</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="pillar2Desc">-100-ден +100 баллға дейінгі аралық. Әрбір қатысушы үшін нөлден басталатын жинақтау жүйесі.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-smooth">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-gavel"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="pillar3Title">Құқық қорғау және апелляция</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="pillar3Desc">Әрбір мүше Президент Аппаратына 3 күн ішінде айыппұлға шағымдануға кепілдендірілген құқылы.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-smooth">
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-file-excel"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2" data-i18n="pillar4Title">Министрлікке есеп беру</h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="pillar4Desc">Ресми тізімдемелер мен хаттамаларды бір батырмамен Excel-ге жедел экспорттау.</p>
+        </div>
+      </div>
+
+      <!-- Призыв к действию -->
+      <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center text-2xl font-bold">
+            <i class="fa-solid fa-bullhorn"></i>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-slate-900" data-i18n="ctaQuestion">Сіз мектеп парламентінің мүшесісіз, бірақ әлі тіркелмедіңіз бе?</h4>
+            <p class="text-sm text-slate-600" data-i18n="ctaDesc">Тіркеліп, аты-жөніңізді, сыныбыңызды және министрлікті көрсетіңіз. Модерациядан өткен соң жеке кабинет ашылады.</p>
+          </div>
+        </div>
+        <button onclick="openAuthModal('register')" class="whitespace-nowrap px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition-smooth">
+          <span data-i18n="ctaBtn">Өтініш беру</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. СЕКЦИЯ: МИНИСТЕРСТВА (7) -->
+    <div id="view-factions" class="view-content hidden space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200" data-i18n="ministriesBadge">
+          Өзін-өзі басқару құрылымы
+        </span>
+        <h2 class="text-3xl font-extrabold text-slate-900" data-i18n="ministriesTitle">Құрылтайдың 7 Министрлігі</h2>
+        <p class="text-slate-600 text-sm" data-i18n="ministriesDesc">
+          Әрбір министрлік мектептің нақты міндеттерін шешеді. Әр бағыттың міндеттерімен, құрамымен және жетекшілерімен танысыңыз.
+        </p>
+      </div>
+
+      <!-- Сетка министерств -->
+      <div id="factions-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Генерируется через JS -->
+      </div>
+    </div>
+
+    <!-- 3. СЕКЦИЯ: СИСТЕМА KPI -->
+    <div id="view-kpi" class="view-content hidden space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200" data-i18n="kpiBadge">
+          Тиімділікті бағалау
+        </span>
+        <h2 class="text-3xl font-extrabold text-slate-900" data-i18n="kpiTitle">KPI жүйесінің регламенті мен баллдық кестесі</h2>
+        <p class="text-slate-600 text-sm" data-i18n="kpiDesc">
+          KPI — 200 баллдық шкала бойынша негізгі тиімділік көрсеткіштері. -100-ден +100 баллға дейін. Әрбір мүшенің бастапқы теңгерімі 0-ге тең.
+        </p>
+      </div>
+
+      <!-- Визуальная интерактивная шкала -->
+      <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-gauge-high text-cyan-600"></i> <span data-i18n="kpiStatusTitle">Баллдар шкаласы бойынша мәртебе көрсеткіші</span>
+        </h3>
+
+        <div class="relative pt-6 pb-2">
+          <div class="h-4 rounded-full kpi-scale-bar w-full"></div>
+          <div class="flex justify-between text-xs font-bold text-slate-600 mt-2">
+            <span class="text-rose-600" data-i18n="kpiScaleMinus100">-100 (Шығару)</span>
+            <span class="text-amber-600" data-i18n="kpiScaleMinus50">-50 (Ескерту)</span>
+            <span class="text-blue-600" data-i18n="kpiScaleZero">0 (Бастау)</span>
+            <span class="text-teal-600" data-i18n="kpiScalePlus50">+50 (Белсенді)</span>
+            <span class="text-emerald-600" data-i18n="kpiScalePlus100">+100 (Сертификат)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-sm">
+            <div class="font-bold flex items-center gap-1.5 mb-1" data-i18n="kpiZoneRedTitle">
+              <i class="fa-solid fa-circle-exclamation text-rose-600"></i> Қызыл аймақ: шығару
+            </div>
+            <span data-i18n="kpiZoneRedDesc">-100 балл рейтингі немесе 3 өрескел тәртіп бұзушылық Парламент құрамынан шығаруға әкеледі.</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 text-sm">
+            <div class="font-bold flex items-center gap-1.5 mb-1" data-i18n="kpiZoneBlueTitle">
+              <i class="fa-solid fa-calendar-check text-blue-600"></i> Жинақтаушы рейтинг
+            </div>
+            <span data-i18n="kpiZoneBlueDesc">Рейтинг ай сайын 1-күні мектеп Президентінің өкімімен қорытындыланады.</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm">
+            <div class="font-bold flex items-center gap-1.5 mb-1" data-i18n="kpiZoneGoldTitle">
+              <i class="fa-solid fa-award text-emerald-600"></i> Алтын аймақ: марапат
+            </div>
+            <span data-i18n="kpiZoneGoldDesc">+100 баллға жеткенде ерекше үлес пен көшбасшылық үшін құрметті сертификат табысталады.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Таблица регламентных штрафов и бонусов -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900" data-i18n="kpiTableTitle">Бекітілген баллдар кестесі</h3>
+            <p class="text-xs text-slate-500" data-i18n="kpiTableSub">Мектеп Құрылтайының ресми регламентіндегі нақты өлшемшарттар</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="filterKpiRules('ALL')" class="kpi-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white" data-filter="ALL" data-i18n="filterAll">Барлығы</button>
+            <button onclick="filterKpiRules('PENALTY')" class="kpi-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="PENALTY" data-i18n="filterPenalties">Айыппұлдар (-)</button>
+            <button onclick="filterKpiRules('BONUS')" class="kpi-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="BONUS" data-i18n="filterBonuses">Ынталандырулар (+)</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                <th class="py-3 px-6 font-semibold" data-i18n="thRule">Негіздеме / Іс-әрекет</th>
+                <th class="py-3 px-6 font-semibold w-32" data-i18n="thPoints">Баллдар</th>
+                <th class="py-3 px-6 font-semibold w-40" data-i18n="thViolationStatus">Бұзушылық сипаты</th>
+              </tr>
+            </thead>
+            <tbody id="kpi-rules-tbody" class="text-sm divide-y divide-slate-100">
+              <!-- Заполняется динамически -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. СЕКЦИЯ: ОБЩИЙ РЕЙТИНГ (LEADERBOARD) -->
+    <div id="view-leaderboard" class="view-content hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200" data-i18n="boardBadge">
+            Құрмет тақтасы және мониторинг
+          </span>
+          <h2 class="text-3xl font-extrabold text-slate-900 mt-2" data-i18n="boardTitle">Құрылтай мүшелерінің жиынтық рейтингі</h2>
+          <p class="text-slate-600 text-sm" data-i18n="boardSub">Расталған жазбалар негізінде нақты уақыт режимінде жаңартылады</p>
+        </div>
+
+        <!-- Поиск и фильтрация -->
+        <div class="flex flex-wrap items-center gap-3">
+          <input type="text" id="leaderboard-search" oninput="renderLeaderboard()" data-i18n-placeholder="searchPlaceholder" placeholder="Аты-жөні немесе сынып бойынша іздеу..." class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 w-64 bg-white">
+          <select id="leaderboard-faction-filter" onchange="renderLeaderboard()" class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            <option value="" data-i18n="allMinistries">Барлық министрліктер</option>
+            <option value="Атқару">Атқару</option>
+            <option value="Азаматтық">Азаматтық</option>
+            <option value="Білімпаз">Білімпаз</option>
+            <option value="Мәдениет">Мәдениет</option>
+            <option value="Ақпарат медиа">Ақпарат медиа</option>
+            <option value="Эко қоғам">Эко қоғам</option>
+            <option value="Салауат">Салауат</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Таблица лидеров -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                <th class="py-4 px-6 font-semibold w-16 text-center" data-i18n="thPlace">Орын</th>
+                <th class="py-4 px-6 font-semibold" data-i18n="thFio">Қатысушының аты-жөні</th>
+                <th class="py-4 px-6 font-semibold" data-i18n="thClass">Сынып</th>
+                <th class="py-4 px-6 font-semibold" data-i18n="thMinistry">Министрлік</th>
+                <th class="py-4 px-6 font-semibold text-center w-36" data-i18n="thKpi">KPI балы</th>
+                <th class="py-4 px-6 font-semibold" data-i18n="thStatus">Мәртебе</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody" class="text-sm divide-y divide-slate-100">
+              <!-- Заполняется динамически -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. СЕКЦИЯ: ЛИЧНЫЙ КАБИНЕТ ЧЛЕНА -->
+    <div id="view-member" class="view-content hidden space-y-8">
+      <!-- Шапка профиля -->
+      <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white flex items-center justify-center text-3xl font-extrabold shadow-md">
+            <span id="member-avatar-initials">AK</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="member-profile-name" class="text-2xl font-bold text-slate-900">Атахан Қыдыр</h2>
+              <span id="member-role-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Член Парламента</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-slate-500 mt-1">
+              <span id="member-profile-class"><i class="fa-solid fa-graduation-cap mr-1"></i>11 «А»</span>
+              <span>•</span>
+              <span id="member-profile-faction"><i class="fa-solid fa-building-columns mr-1"></i>Министерство «Атқару»</span>
+              <span>•</span>
+              <span id="member-profile-email"><i class="fa-solid fa-envelope mr-1"></i>email@school.kz</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Виджет баллов KPI и кнопки профиля/удостоверения -->
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <div class="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div class="text-right">
+              <div class="text-xs text-slate-500 uppercase tracking-wider font-semibold" data-i18n="cabinetBalanceLabel">Ағымдағы KPI теңгерімі</div>
+              <div id="member-kpi-badge" class="text-3xl font-extrabold text-emerald-600">+45</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-xl text-amber-500 shadow-sm">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 w-full sm:w-auto">
+            <button onclick="openUserProfileModal(state.currentUser.id)" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-smooth flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-user"></i> <span data-i18n="btnMyProfile">Менің жеке ісім</span>
+            </button>
+            <button onclick="openDelegateIdCardModal(state.currentUser.id)" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs shadow-md shadow-amber-500/20 transition-smooth flex items-center justify-center gap-1.5 whitespace-nowrap">
+              <i class="fa-solid fa-id-card"></i> <span data-i18n="btnIdCard">Қызметтік куәлік</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Действия и история -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Левая колонка: История начислений -->
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-cyan-600"></i> <span data-i18n="historyTitle">Есептеулер мен айыппұлдар тарихы</span>
+            </h3>
+            <span class="text-xs text-slate-400" data-i18n="historySubtitle">Барлық өзгерістер ашық түрде көрсетілген</span>
+          </div>
+
+          <div id="member-history-list" class="space-y-3">
+            <!-- Заполняется динамически -->
+          </div>
+        </div>
+
+        <!-- Правая колонка: Подача апелляций -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-scale-unbalanced text-amber-500"></i> <span data-i18n="appealBlockTitle">Президент Аппаратына апелляция</span>
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed" data-i18n="appealBlockDesc">
+              Айыппұлмен келіспейсіз бе? Құрылтай регламентіне сәйкес, сіз шешімге 3 күн ішінде шағымдануға құқылысыз.
+            </p>
+            <button onclick="openAppealModal()" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-smooth shadow-md shadow-amber-500/20">
+              <span data-i18n="btnAppealSubmit">Жазбаша негіздеме беру</span>
+            </button>
+          </div>
+
+          <!-- Мои текущие апелляции -->
+          <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-3">
+            <h4 class="text-sm font-bold text-slate-900" data-i18n="myAppealsTitle">Мен берген апелляциялар</h4>
+            <div id="member-appeals-list" class="space-y-2 text-xs">
+              <!-- Заполняется динамически -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6. СЕКЦИЯ: АДМИН-ПАНЕЛЬ (SUPER ADMIN & MODERATOR) -->
+    <div id="view-admin" class="view-content hidden space-y-8">
+      <!-- Заголовок админки -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-crown text-amber-600"></i> <span data-i18n="adminBadge">Мектеп Құрылтайын басқару панелі</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-slate-900" data-i18n="adminTitle">Басқару, мониторинг және экспорт</h2>
+          <p class="text-slate-600 text-sm"><span data-i18n="adminAccessLevel">Қолжетімділік деңгейі:</span> <span class="font-bold text-slate-900" data-i18n="adminPresidentRole">Бас әкімші (Президент)</span></p>
+        </div>
+
+        <!-- Кнопки быстрого экспорта Excel -->
+        <div class="flex items-center gap-3">
+          <button onclick="downloadMinistryExcel()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-smooth flex items-center gap-2">
+            <i class="fa-solid fa-file-excel"></i> <span data-i18n="btnExcelMinistry">Министрлікке есеп (.xlsx)</span>
+          </button>
+          <button onclick="downloadKpiSummaryExcel()" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-md shadow-blue-600/20 transition-smooth flex items-center gap-2">
+            <i class="fa-solid fa-table-list"></i> <span data-i18n="btnExcelKpi">Тізімдеме: Аты-жөні + KPI (.xlsx)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Сводные карточки KPI -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500 font-semibold uppercase" data-i18n="statApproved">Бекітілген мүшелер</div>
+          <div id="admin-stat-members" class="text-2xl font-extrabold text-slate-900 mt-1">0</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-amber-300 shadow-sm bg-amber-50/50">
+          <div class="text-xs text-amber-800 font-semibold uppercase" data-i18n="statPending">Тексеруді күтуде</div>
+          <div id="admin-stat-pending" class="text-2xl font-extrabold text-amber-600 mt-1">0</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-slate-500 font-semibold uppercase" data-i18n="statAvgKpi">Орташа KPI балы</div>
+          <div id="admin-stat-avg" class="text-2xl font-extrabold text-indigo-600 mt-1">0</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="text-xs text-emerald-700 font-semibold uppercase" data-i18n="statCertificates">Сертификаттар (+100)</div>
+          <div id="admin-stat-cert" class="text-2xl font-extrabold text-emerald-600 mt-1">0</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-rose-300 shadow-sm bg-rose-50/50">
+          <div class="text-xs text-rose-800 font-semibold uppercase" data-i18n="statRisk">Қауіпті аймақта (-100)</div>
+          <div id="admin-stat-risk" class="text-2xl font-extrabold text-rose-600 mt-1">0</div>
+        </div>
+      </div>
+
+      <!-- Подвкладки админки -->
+      <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <button onclick="switchAdminTab('users')" class="admin-tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-slate-900 text-white" data-tab="users">
+          <i class="fa-solid fa-users mr-2"></i><span data-i18n="tabAllUsers">Барлық қатысушылар</span>
+        </button>
+        <button onclick="switchAdminTab('pending')" class="admin-tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200" data-tab="pending">
+          <i class="fa-solid fa-user-clock mr-2"></i><span data-i18n="tabPending">Модерацияға өтінімдер</span> <span id="admin-pending-badge" class="ml-1 px-2 py-0.5 rounded-full text-xs bg-amber-500 text-white font-extrabold">0</span>
+        </button>
+        <button onclick="switchAdminTab('appeals')" class="admin-tab-btn px-4 py-2 rounded-xl text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200" data-tab="appeals">
+          <i class="fa-solid fa-scale-balanced mr-2"></i><span data-i18n="tabAppeals">Апелляциялар</span> <span id="admin-appeals-badge" class="ml-1 px-2 py-0.5 rounded-full text-xs bg-indigo-500 text-white font-extrabold">0</span>
+        </button>
+      </div>
+
+      <!-- Подвкладка 1: Таблица всех участников -->
+      <div id="admin-subview-users" class="admin-subview space-y-4">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3">
+          <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+            <input type="text" id="admin-user-search" oninput="renderAdminUsersTable()" data-i18n-placeholder="searchAdminPlaceholder" placeholder="Аты-жөні, ЖСН, сынып бойынша іздеу..." class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 w-full sm:w-64 bg-white">
+            
+            <select id="admin-faction-filter" onchange="renderAdminUsersTable()" class="px-3 py-2 text-xs font-semibold border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+              <option value="" data-i18n="allMinistries">Барлық министрліктер</option>
+              <option value="Атқару">Атқару</option>
+              <option value="Азаматтық">Азаматтық</option>
+              <option value="Білімпаз">Білімпаз</option>
+              <option value="Мәдениет">Мәдениет</option>
+              <option value="Ақпарат медиа">Ақпарат медиа</option>
+              <option value="Эко қоғам">Эко қоғам</option>
+              <option value="Салауат">Салауат</option>
+            </select>
+
+            <select id="admin-status-filter" onchange="renderAdminUsersTable()" class="px-3 py-2 text-xs font-semibold border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+              <option value="" data-i18n="statusFilterAll">Барлық мәртебелер</option>
+              <option value="APPROVED" data-i18n="statusFilterApproved">Бекітілгендер</option>
+              <option value="PENDING" data-i18n="statusFilterPending">Күтілудегілер</option>
+              <option value="REJECTED" data-i18n="statusFilterRejected">Қабылданбағандар</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
+            <button onclick="openBulkKpiModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-600/20 transition-smooth flex items-center gap-1.5 whitespace-nowrap">
+              <i class="fa-solid fa-users-gear"></i> <span data-i18n="btnBulkKpi">Министрлікке жаппай балл қою</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thFio">Аты-жөні</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thIin">ЖСН</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thClass">Сынып</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thMinistry">Министрлік</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thRole">Рөлі</th>
+                  <th class="py-3.5 px-4 font-semibold text-center" data-i18n="thKpi">KPI</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thStatus">Мәртебе</th>
+                  <th class="py-3.5 px-4 font-semibold text-right" data-i18n="thActions">Әрекеттер</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-tbody" class="text-sm divide-y divide-slate-100">
+                <!-- Заполняется динамически -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Подвкладка 2: Заявки на модерацию -->
+      <div id="admin-subview-pending" class="admin-subview hidden space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 font-bold text-slate-900" data-i18n="pendingBlockTitle">
+            Әкімшінің растауын күтуде
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thFio">Аты-жөні</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thEmail">Email</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thIin">ЖСН</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thClass">Сынып</th>
+                  <th class="py-3.5 px-4 font-semibold" data-i18n="thDesiredMinistry">Таңдаған министрлігі</th>
+                  <th class="py-3.5 px-4 font-semibold text-right" data-i18n="thDecision">Шешім</th>
+                </tr>
+              </thead>
+              <tbody id="admin-pending-tbody" class="text-sm divide-y divide-slate-100">
+                <!-- Заполняется динамически -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Подвкладка 3: Рассмотрение апелляций -->
+      <div id="admin-subview-appeals" class="admin-subview hidden space-y-4">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-4 border-b border-slate-100 font-bold text-slate-900" data-i18n="appealsBlockTitle">
+            Айыппұлдар бойынша түскен апелляциялар
+          </div>
+          <div id="admin-appeals-container" class="divide-y divide-slate-100">
+            <!-- Заполняется динамически -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ФУТЕР -->
+  <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-sm mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-2">
+        <div class="w-6 h-6 rounded bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs">Қ</div>
+        <span class="font-bold text-white" data-i18n="footerTitle">Астана қ. №32 мектеп-гимназиясының Школьный Құрылтайы</span>
+      </div>
+      <div data-i18n="footerDesc">Мектептік өзін-өзі басқарудың KPI жүйесін мониторингтеу және ашық есептеу порталы</div>
+      <div class="text-xs text-slate-500" data-i18n="footerSub">Мектеп парламентінің бірыңғай ақпараттық жүйесі</div>
+    </div>
+  </footer>
+
+  <!-- ================= МОДАЛЬНЫЕ ОКНА ================= -->
+
+  <!-- 1. Модальное окно: Авторизация / Регистрация -->
+  <div id="modal-auth" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+      <!-- Переключатель Вход / Регистрация -->
+      <div class="flex border-b border-slate-200 bg-slate-50">
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-4 font-bold text-sm text-center border-b-2 border-slate-900 text-slate-900" data-i18n="tabAuthLogin">
+          Кіру
+        </button>
+        <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-4 font-bold text-sm text-center border-b-2 border-transparent text-slate-500 hover:text-slate-900" data-i18n="tabAuthRegister">
+          Құрылтайға тіркелу
+        </button>
+      </div>
+
+      <!-- Форма Входа -->
+      <form id="form-login" onsubmit="handleLogin(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelEmail">Email</label>
+          <input type="email" id="login-email" required placeholder="example@school.kz" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelPassword">Құпиясөз</label>
+          <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div id="login-error" class="hidden text-xs text-rose-600 bg-rose-50 p-3 rounded-xl border border-rose-200"></div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition-smooth shadow-lg">
+          <span data-i18n="btnSubmitLogin">Аккаунтқа кіру</span>
+        </button>
+      </form>
+
+      <!-- Форма Регистрации -->
+      <form id="form-register" onsubmit="handleRegister(event)" class="p-6 space-y-3 hidden max-h-[80vh] overflow-y-auto">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelFio">Оқушының толық аты-жөні *</label>
+          <input type="text" id="reg-fullname" required placeholder="Например: Болатов Арман Саматович" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelIin">ЖСН (12 сан) *</label>
+          <input type="text" id="reg-iin" maxlength="12" pattern="\d{12}" required placeholder="080315501234" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          <p class="text-[10px] text-slate-500 mt-0.5" data-i18n="hintIin">Министрлікке ресми есеп беру үшін қажет</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelClass">Сынып *</label>
+            <input type="text" id="reg-class" required placeholder="10 «А»" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelPhone">Телефон</label>
+            <input type="tel" id="reg-phone" placeholder="+7 777 000 0000" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelDesiredMinistry">Қалаған министрлік *</label>
+          <select id="reg-faction" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            <option value="Атқару">«Атқару»</option>
+            <option value="Азаматтық">«Азаматтық»</option>
+            <option value="Білімпаз">«Білімпаз»</option>
+            <option value="Мәдениет">«Мәдениет»</option>
+            <option value="Ақпарат медиа">«Ақпарат медиа»</option>
+            <option value="Эко қоғам">«Эко қоғам»</option>
+            <option value="Салауат">«Салауат»</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelEmail">Email *</label>
+          <input type="email" id="reg-email" required placeholder="user@school.kz" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelPassword">Құпиясөз *</label>
+          <input type="password" id="reg-password" required minlength="6" placeholder="Минимум 6 таңба" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div id="reg-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200"></div>
+        <div id="reg-success" class="hidden text-xs text-emerald-700 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200"></div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-smooth shadow-lg shadow-amber-500/20">
+          <span data-i18n="btnSubmitRegister">Тіркелуге өтінім беру</span>
+        </button>
+      </form>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-200 text-center">
+        <button onclick="closeModal('modal-auth')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold" data-i18n="btnCloseModal">Терезені жабу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Модальное окно: Начисление / Списание KPI (Только Супер-Админ) -->
+  <div id="modal-kpi-scoring" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900" data-i18n="modalKpiTitle">KPI баллдарын белгілеу</h3>
+          <p class="text-xs text-slate-500" data-i18n="modalKpiSub">Тек Бас әкімші баллдарды өзгертуге құқылы</p>
+        </div>
+        <button onclick="closeModal('modal-kpi-scoring')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+        <div class="text-xs text-slate-500" data-i18n="labelDelegate">Делегат / Мүше:</div>
+        <div id="kpi-target-user-name" class="font-bold text-slate-900">ФИО Участника</div>
+        <div id="kpi-target-user-meta" class="text-xs text-slate-500">Класс: 10 «А» • Министерство «Атқару» • Текущий KPI: 0</div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiTemplate">Регламенттен үлгі таңдаңыз</label>
+          <select id="kpi-rule-select" onchange="handleKpiRuleSelect(this)" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            <option value="" data-i18n="optionKpiManual">-- Регламенттен таңдау (немесе қолмен енгізу) --</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiPoints">Балл саны</label>
+            <input type="number" id="kpi-custom-points" step="1" placeholder="-5 немесе +10" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+          <div class="flex items-center pt-5">
+            <label class="inline-flex items-center text-xs font-semibold text-rose-700 cursor-pointer">
+              <input type="checkbox" id="kpi-is-serious" class="w-4 h-4 rounded text-rose-600 mr-2">
+              <span data-i18n="labelSeriousViolation">Өрескел бұзушылық (+1 есептегішке)</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiReason">Негіздеме / Балл қою себебі</label>
+          <textarea id="kpi-custom-reason" rows="2" placeholder="Себебі..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button onclick="closeModal('modal-kpi-scoring')" class="px-4 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitKpiChange()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition-smooth">
+          <span data-i18n="btnApplyPoints">Баллдарды қолдану</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Модальное окно: Секретная зона (Просмотр пароля из защищенного хранилища) -->
+  <div id="modal-reveal-password" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900" data-i18n="modalRevealTitle">Қорғалған құпиясөздер қоймасы</h3>
+            <p class="text-[11px] text-slate-500" data-i18n="modalRevealSub">AES-256-GCM шифрлауы</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-reveal-password')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div id="reveal-step-auth" class="space-y-3">
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+          <i class="fa-solid fa-shield-halved text-amber-600 mr-1"></i> <span data-i18n="revealNotice">Деректерді шешу және көру үшін Бас әкімшінің шебер-құпиясөзін енгізіңіз:</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelAdminPass">Әкімші құпиясөзі</label>
+          <input type="password" id="reveal-admin-password" placeholder="••••••••" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div id="reveal-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200"></div>
+
+        <button onclick="confirmRevealPassword()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition-smooth">
+          <span data-i18n="btnDecrypt">Растау және деректерді ашу</span>
+        </button>
+      </div>
+
+      <div id="reveal-step-result" class="hidden space-y-3">
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+          <div class="text-xs text-slate-500"><span data-i18n="thFio">Қатысушы</span>: <span id="reveal-user-name" class="font-bold text-slate-800"></span></div>
+          <div class="text-xs text-slate-500">Email: <span id="reveal-user-email" class="font-bold text-slate-800"></span></div>
+          <div class="pt-2 border-t border-slate-200">
+            <div class="text-xs text-slate-500 uppercase font-bold" data-i18n="labelSavedPass">Ағымдағы сақталған құпиясөз:</div>
+            <div class="flex items-center justify-between mt-1 bg-white px-3 py-2 rounded-xl border border-slate-300">
+              <span id="reveal-result-password" class="font-mono text-base font-extrabold text-indigo-700 tracking-wider"></span>
+              <button onclick="copyRevealedPassword()" class="text-xs bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded font-semibold text-slate-700" data-i18n="btnCopy">Көшіру</button>
+            </div>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-reveal-password')" class="w-full py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold text-xs transition-smooth" data-i18n="btnCloseModal">
+          Жабу
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. Модальное окно: Подача апелляции -->
+  <div id="modal-appeal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-bold text-slate-900" data-i18n="modalAppealTitle">Апелляцияға өтініш беру</h3>
+        <button onclick="closeModal('modal-appeal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <p class="text-xs text-slate-600" data-i18n="appealTextHelp">
+        Өзіңіз даулағыңыз келетін айыппұлды таңдап, Құрылтай Президенті үшін дәлелді дәйектеріңізді толық жазыңыз.
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelSelectPenalty">Айыппұлды таңдаңыз</label>
+          <select id="appeal-history-select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            <!-- Заполняется динамически -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelWrittenReason">Жазбаша негіздеме *</label>
+          <textarea id="appeal-reason" rows="4" required placeholder="Кешігу/қатыспау себебі, растайтын жағдайлар, дәлелді себеп..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeModal('modal-appeal')" class="px-4 py-2 rounded-xl text-slate-600 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitAppeal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm">
+          <span data-i18n="btnSendAppeal">Өтінішті жіберу</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Модальное окно: Редактирование участника и смена министерства -->
+  <div id="modal-edit-user" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900" data-i18n="modalEditTitle">Профильді өңдеу</h3>
+          <p class="text-xs text-slate-500" data-i18n="modalEditSub">Министрлікті, сыныпты немесе жеке деректерді өзгерту</p>
+        </div>
+        <button onclick="closeModal('modal-edit-user')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <input type="hidden" id="edit-user-id">
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelFio">Оқушының толық аты-жөні *</label>
+          <input type="text" id="edit-user-fullname" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="thMinistry">Министрлік *</label>
+          <select id="edit-user-faction" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            <option value="Атқару">«Атқару»</option>
+            <option value="Азаматтық">«Азаматтық»</option>
+            <option value="Білімпаз">«Білімпаз»</option>
+            <option value="Мәдениет">«Мәдениет»</option>
+            <option value="Ақпарат медиа">«Ақпарат медиа»</option>
+            <option value="Эко қоғам">«Эко қоғам»</option>
+            <option value="Салауат">«Салауат»</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelClass">Сынып *</label>
+            <input type="text" id="edit-user-class" required placeholder="10 «А»" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelPhone">Телефон</label>
+            <input type="tel" id="edit-user-phone" placeholder="+7 777..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelIin">ЖСН (12 сан)</label>
+          <input type="text" id="edit-user-iin" maxlength="12" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeModal('modal-edit-user')" class="px-4 py-2 rounded-xl text-slate-600 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitEditUser()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition-smooth">
+          <span data-i18n="btnSaveChanges">Өзгерістерді сақтау</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Модальное окно: Удаление участника строго с подтверждением пароля -->
+  <div id="modal-delete-user" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-rose-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-rose-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900" data-i18n="modalDeleteTitle">Құрылтайдан шығару</h3>
+            <p class="text-[11px] text-rose-600 font-semibold" data-i18n="modalDeleteSub">Қайтарылмайтын әрекет</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-delete-user')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl text-xs text-rose-900 space-y-1">
+        <div data-i18n="deleteWarningHead">Сіз мына қатысушыны шығарып, дерекқордан жойғалы тұрсыз:</div>
+        <div id="delete-user-fullname" class="font-bold text-sm text-slate-900">ФИО Участника</div>
+        <div id="delete-user-meta" class="text-slate-600">Класс: 10 «А» • Министерство «Атқару»</div>
+        <div class="pt-2 text-[11px] text-rose-700" data-i18n="deleteWarningSub">Барлық KPI есептеулері, жазбалар мен профиль қайтарымсыз жойылады.</div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="block text-xs font-bold text-slate-700 uppercase" data-i18n="labelAdminDeletePass">Растау үшін Әкімшінің құпиясөзін енгізіңіз *</label>
+        <input type="password" id="delete-admin-password" placeholder="••••••••" class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500">
+        <div id="delete-error" class="hidden text-xs text-rose-600 bg-rose-50 p-2 rounded-xl border border-rose-200"></div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeModal('modal-delete-user')" class="px-4 py-2 rounded-xl text-slate-600 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitDeleteUser()" class="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm shadow-md shadow-rose-600/20 transition-smooth">
+          <i class="fa-solid fa-trash-can mr-1"></i> <span data-i18n="btnDeletePermanent">Біржола жою</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Модальное окно: Просмотр полной истории KPI участника -->
+  <div id="modal-user-history" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 p-6 space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900" data-i18n="historyTitle">Есептеулер мен айыппұлдар тарихы</h3>
+          <p id="user-history-subtitle" class="text-xs text-slate-500">ФИО Участника</p>
+        </div>
+        <button onclick="closeModal('modal-user-history')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div id="user-history-list" class="space-y-2.5 overflow-y-auto flex-grow pr-1">
+        <!-- Заполняется динамически -->
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 flex justify-end">
+        <button onclick="closeModal('modal-user-history')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-smooth" data-i18n="btnCloseModal">Жабу</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Модальное окно: Массовое начисление всему министерству -->
+  <div id="modal-bulk-kpi" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900" data-i18n="modalBulkTitle">Министрлікке жаппай балл қою</h3>
+          <p class="text-xs text-slate-500" data-i18n="modalBulkSub">Министрліктің барлық бекітілген мүшелеріне бір мезетте балл қосу немесе шегеру</p>
+        </div>
+        <button onclick="closeModal('modal-bulk-kpi')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelSelectMinistry">Министрлікті таңдаңыз *</label>
+          <select id="bulk-faction-select" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            <option value="Атқару">«Атқару»</option>
+            <option value="Азаматтық">«Азаматтық»</option>
+            <option value="Білімпаз">«Білімпаз»</option>
+            <option value="Мәдениет">«Мәдениет»</option>
+            <option value="Ақпарат медиа">«Ақпарат медиа»</option>
+            <option value="Эко қоғам">«Эко қоғам»</option>
+            <option value="Салауат">«Салауат»</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiTemplate">Регламенттен үлгі таңдаңыз</label>
+          <select id="bulk-kpi-rule-select" onchange="handleBulkKpiRuleSelect(this)" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+            <option value="" data-i18n="optionKpiManual">-- Регламенттен таңдау (немесе қолмен енгізу) --</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiPoints">Баллдар (+/-) *</label>
+            <input type="number" id="bulk-custom-points" step="1" placeholder="+5 немесе -5" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div class="flex items-center pt-5">
+            <label class="inline-flex items-center text-xs font-semibold text-rose-700 cursor-pointer">
+              <input type="checkbox" id="bulk-is-serious" class="w-4 h-4 rounded text-rose-600 mr-2">
+              <span data-i18n="labelSeriousViolation">Өрескел бұзушылық</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelKpiReason">Іс-шараның себебі / негіздемесі *</label>
+          <textarea id="bulk-custom-reason" rows="2" placeholder="Себебі..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeModal('modal-bulk-kpi')" class="px-4 py-2 rounded-xl text-slate-600 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitBulkKpi()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-md transition-smooth">
+          <span data-i18n="btnApplyBulk">Бүкіл министрлікке қолдану</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Модальное окно: Личное дело / Профиль участника -->
+  <div id="modal-user-profile" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-address-card"></i>
+          </span>
+          <div>
+            <h3 class="text-base font-bold text-slate-900" data-i18n="modalProfileTitle">Делегаттың жеке ісі</h3>
+            <p class="text-[11px] text-slate-500" data-i18n="modalProfileSub">№32 мектеп-гимназиясы • Школьный Құрылтай</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-user-profile')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- Карточка информации -->
+      <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white flex items-center justify-center text-2xl font-black shadow-md shrink-0">
+          <span id="profile-modal-avatar">AK</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h4 id="profile-modal-fullname" class="text-lg font-bold text-slate-900">ФИО Участника</h4>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 mt-1">
+            <span id="profile-modal-class" class="font-semibold text-slate-700">10 «А»</span>
+            <span>•</span>
+            <span id="profile-modal-faction" class="font-semibold text-amber-700">«Атқару»</span>
+            <span>•</span>
+            <span id="profile-modal-role" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-800">Парламент мүшесі</span>
+          </div>
+          <div class="text-[11px] font-mono text-slate-400 mt-1" id="profile-modal-mandate-num">№ KZ-32-KRT-0001</div>
+        </div>
+      </div>
+
+      <!-- Статистика эффективности -->
+      <div class="grid grid-cols-3 gap-3 text-center">
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="thKpi">Балл KPI</div>
+          <div id="profile-modal-kpi" class="text-xl font-black text-emerald-600 mt-0.5">0</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="statViolations">Бұзушылықтар</div>
+          <div id="profile-modal-violations" class="text-xl font-black text-slate-700 mt-0.5">0</div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div class="text-[10px] font-bold text-slate-400 uppercase" data-i18n="thStatus">Мәртебе</div>
+          <div id="profile-modal-status-badge" class="text-xs font-bold text-slate-700 mt-1.5">Қалыпты</div>
+        </div>
+      </div>
+
+      <!-- Последние заслуги -->
+      <div class="space-y-2">
+        <div class="text-xs font-bold text-slate-700 uppercase tracking-wider" data-i18n="portfolioLabel">Белсенділік тарихы / Портфолио:</div>
+        <div id="profile-modal-history-list" class="space-y-2 text-xs">
+          <!-- Заполняется динамически -->
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-100 gap-3">
+        <button onclick="closeModal('modal-user-profile')" class="px-4 py-2 rounded-xl text-slate-600 text-xs font-semibold" data-i18n="btnCloseModal">Жабу</button>
+        <button id="profile-modal-open-mandate-btn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs shadow-md shadow-amber-500/20 transition-smooth flex items-center gap-1.5">
+          <i class="fa-solid fa-id-card"></i> <span data-i18n="btnShowMandate">Қызметтік куәлікті көрсету</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Модальное окно: Официальное удостоверение (Куәлік) -->
+  <div id="modal-delegate-mandate" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 rounded-3xl max-w-xl w-full shadow-2xl border border-amber-500/30 p-6 space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-id-card text-amber-400"></i> <span data-i18n="modalMandateTitle">Ресми қызметтік куәлік</span>
+          </h3>
+          <p class="text-[11px] text-amber-400/80 font-medium" data-i18n="modalMandateSub">№32 мектеп-гимназиясы • Школьный Құрылтай</p>
+        </div>
+        <button onclick="closeModal('modal-delegate-mandate')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <!-- КАРТОЧКА УДОСТОВЕРЕНИЯ (ОБЛАСТЬ ПЕЧАТИ) -->
+      <div id="print-mandate-area" class="mandate-card rounded-2xl p-6 text-white overflow-hidden relative border-2 border-amber-400/80 shadow-2xl">
+        <div class="mandate-ornament absolute inset-0 pointer-events-none"></div>
+
+        <!-- Шапка удостоверения -->
+        <div class="relative z-10 text-center border-b border-amber-400/40 pb-3 mb-4 space-y-1">
+          <div class="text-[10px] tracking-widest uppercase font-extrabold text-amber-300" data-i18n="mandateHeaderCity">АСТАНА ҚАЛАСЫ • №32 МЕКТЕП-ГИМНАЗИЯСЫ</div>
+          <div class="text-base font-black tracking-wider uppercase bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent" data-i18n="mandateDocTitle">
+            МЕКТЕП ҚҰРЫЛТАЙЫНЫҢ КУӘЛІГІ
+          </div>
+          <div class="text-[9px] tracking-wider text-slate-300 uppercase" data-i18n="mandateDocSub">МЕКТЕП ПАРЛАМЕНТІ МҮШЕСІНІҢ ҚЫЗМЕТТІК КУӘЛІГІ</div>
+        </div>
+
+        <!-- Тело удостоверения -->
+        <div class="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+          
+          <!-- Левая колонка: Фото / Аватар / Номер -->
+          <div class="flex flex-col items-center text-center space-y-2">
+            <div class="w-24 h-28 rounded-xl bg-slate-800 border-2 border-amber-400 flex flex-col items-center justify-center relative shadow-lg overflow-hidden">
+              <span id="mandate-card-avatar" class="text-3xl font-black text-amber-300">AK</span>
+              <div class="absolute bottom-0 inset-x-0 bg-amber-500/90 text-slate-950 font-bold text-[8px] py-0.5 tracking-wider uppercase" data-i18n="mandateBadgeKz">
+                ҚҰРЫЛТАЙ
+              </div>
+            </div>
+            <div id="mandate-card-number" class="text-[11px] font-mono font-extrabold text-amber-300 bg-black/40 px-2 py-0.5 rounded border border-amber-400/30">
+              № KZ-32-KRT-0001
+            </div>
+          </div>
+
+          <!-- Правая колонка: Данные члена Парламента -->
+          <div class="sm:col-span-2 space-y-2">
+            <div>
+              <div class="text-[9px] font-bold text-slate-400 uppercase" data-i18n="mandateMemberLabel">Парламент мүшесі:</div>
+              <div id="mandate-card-name" class="text-lg font-black uppercase text-amber-200 leading-tight">
+                Атахан Қыдыр
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <div class="text-[9px] font-bold text-slate-400 uppercase" data-i18n="mandateMinistryLabel">Министрлік:</div>
+                <div id="mandate-card-faction" class="font-bold text-white text-xs">«Атқару»</div>
+              </div>
+              <div>
+                <div class="text-[9px] font-bold text-slate-400 uppercase" data-i18n="mandateClassLabel">Сынып:</div>
+                <div id="mandate-card-class" class="font-bold text-white text-xs">11 «А»</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="text-[9px] font-bold text-slate-400 uppercase" data-i18n="mandateRoleLabel">Құрылтайдағы лауазымы:</div>
+              <div id="mandate-card-role" class="text-xs font-bold text-amber-400 uppercase">
+                ҚҰРЫЛТАЙ ПРЕЗИДЕНТІ
+              </div>
+            </div>
+
+            <!-- Подпись и печать -->
+            <div class="pt-2 border-t border-amber-400/30 flex items-center justify-between text-[9px] text-slate-300">
+              <div>
+                <div><span data-i18n="mandateValidity">Қолданылу мерзімі: 2026–2027 оқу жылы</span></div>
+                <div data-i18n="mandateOrder">№1 өкім / Мектеп Президенті</div>
+              </div>
+              <div class="text-right">
+                <div class="font-cinzel font-bold text-amber-200 italic">А. Қыдыр</div>
+                <div class="text-[8px] text-slate-400" data-i18n="mandateSeal">№32 МГ мөрі</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Кнопки действий -->
+      <div class="flex items-center justify-between pt-2">
+        <button onclick="closeModal('modal-delegate-mandate')" class="px-4 py-2 rounded-xl text-slate-400 hover:text-white text-xs font-semibold" data-i18n="btnCloseModal">
+          Жабу
+        </button>
+        <button onclick="printDelegateMandate()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/25 transition-smooth flex items-center gap-2">
+          <i class="fa-solid fa-print"></i> <span data-i18n="btnPrintMandate">Куәлікті басып шығару (Бейдж)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. Модальное окно: Создание объявления (Супер-Админ) -->
+  <div id="modal-create-announcement" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-bold text-slate-900" data-i18n="modalAnnTitle">Жаңа өкім / хабарландыру</h3>
+        <button onclick="closeModal('modal-create-announcement')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelAnnHeading">Тақырыбы *</label>
+          <input type="text" id="ann-title" required placeholder="Мысалы: Жұма күнгі жалпы мектептік жиналыс" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1" data-i18n="labelAnnContent">Хабарлама мәтіні *</label>
+          <textarea id="ann-content" rows="4" required placeholder="Өкімнің толық мәтіні, уақыты, орны..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeModal('modal-create-announcement')" class="px-4 py-2 rounded-xl text-slate-600 text-sm font-semibold" data-i18n="btnCancel">Бас тарту</button>
+        <button onclick="submitAnnouncement()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-smooth">
+          <span data-i18n="btnPublish">Жариялау</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast уведомления -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
+
+  <!-- JS Сөздік және Логика -->
+  <script src="/js/translations.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
